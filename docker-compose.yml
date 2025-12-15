@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  llm-env:
+    build: .
+    container_name: llm-fft
+
+    volumes:
+      - ./:/app
+
+    environment:
+      - UV_PROJECT_ENVIRONMENT=/uv-venv
+
+    working_dir: /app
+
+    shm_size: "8gb"
+
+    # ✅ Docker Compose v2 GPU 설정
+    gpus: all
+
+    command: bash
+    tty: true
