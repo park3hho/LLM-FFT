@@ -197,6 +197,9 @@ A: ㅋ
 안녕하세요. 오늘은 제가 좋아하는 과일인 바나나에 대해 알아보겠습니다. 바나나는 열대지방에서 자라는
 ```
 ---
+
+
+
 ### Strengthen 
 ### (1) base, instruct Model.
 https://github.com/HongLabInc/HongLabLLM/blob/main/02_fullfinetuning1_base.ipynb
