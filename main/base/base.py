@@ -118,3 +118,53 @@ for i, output in enumerate(output_list):
 
     print(f"Q{i}", question)
     print("A:", answer)
+
+##################################
+####     Q/A masking SFT     #####
+##################################
+print("")
+print("##################################")
+print("####     Q/A masking SFT     #####")
+print("##################################")
+
+# import torch
+from torch.utils.data import Dataset, DataLoader
+
+EOT = 128001 # instruct 모델과 다름
+
+class MyDataset(Dataset):
+    def __init__(self, qna_list, max_length):
+        self.input_ids = []
+        self.target_ids = []
+
+        for qa in qna_list:
+            token_ids = qa['input_ids']
+            input_chunk = token_ids
+            target_chunk = token_ids[1:]
+            input_chunk += [EOT]* (max_length - len(input_chunk))
+            target_chunk +=  [EOT]* (max_length - len(target_chunk))
+            len_ignore = len(qa['q_ids']) - 1 # target은 한 글자가 짧기 때문
+            target_chunk[:len_ignore] = [-100] * len_ignore
+
+            self.input_ids.append(torch.tensor(input_chunk))
+            self.target_ids.append(torch.tensor(target_chunk))
+
+    def __len__(self):
+        return len(self.input_ids)
+
+    def __getitem__(self, idx):
+        return self.input_ids[idx], self.target_ids[idx]
+
+dataset = MyDataset(qna_list, max_length=max_length)
+
+train_loader = DataLoader(dataset, batch_size=2, shuffle=True, drop_last=False)
+
+i = iter(train_loader)
+
+x, y = next(i)
+
+y_temp = y[0].tolist()
+y_temp = [x for x in y_temp if x != -100] # -100은 제외하고 디코딩
+
+print(tokenizer.decode(x[0].tolist()))
+print(tokenizer.decode(y_temp))
