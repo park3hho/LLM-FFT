@@ -1,5 +1,6 @@
 [dependency-groups]
 dev = [
+    "matplotlib>=3.10.8",
     "torch>=2.9.1",
     "transformers>=4.57.3",
 ]

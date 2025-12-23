@@ -254,12 +254,166 @@ Results
 클래스는 객체를 생성하기 위한 설계도이고, 객체는 클래스를 기반으로 생성된 실제 인스턴스입니다.<|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|><|end_of_text|>
 ```
 
-##
-
-
+## FFT Results
+``` FFT Results
+0 Tokens seen: 132
+1 Tokens seen: 264
+2 Tokens seen: 396
+3 Tokens seen: 528
+4 Tokens seen: 660
+^@5 Tokens seen: 792
+6 Tokens seen: 924
+7 Tokens seen: 1056
+8 Tokens seen: 1188
+9 Tokens seen: 1320
+Epoch: 0, Loss: 1.452734375
+10 Tokens seen: 1452
+11 Tokens seen: 1584
+12 Tokens seen: 1716
+13 Tokens seen: 1848
+14 Tokens seen: 1980
+15 Tokens seen: 2112
+16 Tokens seen: 2244
+17 Tokens seen: 2376
+18 Tokens seen: 2508
+19 Tokens seen: 2640
+Epoch: 1, Loss: 0.1677734375
+20 Tokens seen: 2772
+21 Tokens seen: 2904
+22 Tokens seen: 3036
+23 Tokens seen: 3168
+24 Tokens seen: 3300
+25 Tokens seen: 3432
+26 Tokens seen: 3564
+27 Tokens seen: 3696
+28 Tokens seen: 3828
+29 Tokens seen: 3960
+Epoch: 2, Loss: 0.0400390625
+30 Tokens seen: 4092
+31 Tokens seen: 4224
+32 Tokens seen: 4356
+33 Tokens seen: 4488
+34 Tokens seen: 4620
+35 Tokens seen: 4752
+36 Tokens seen: 4884
+37 Tokens seen: 5016
+38 Tokens seen: 5148
+39 Tokens seen: 5280
+Epoch: 3, Loss: 0.0127197265625
+40 Tokens seen: 5412
+41 Tokens seen: 5544
+42 Tokens seen: 5676
+43 Tokens seen: 5808
+44 Tokens seen: 5940
+45 Tokens seen: 6072
+46 Tokens seen: 6204
+47 Tokens seen: 6336
+48 Tokens seen: 6468
+49 Tokens seen: 6600
+Epoch: 4, Loss: 0.00618743896484375
+50 Tokens seen: 6732
+51 Tokens seen: 6864
+52 Tokens seen: 6996
+53 Tokens seen: 7128
+54 Tokens seen: 7260
+55 Tokens seen: 7392
+56 Tokens seen: 7524
+57 Tokens seen: 7656
+58 Tokens seen: 7788
+59 Tokens seen: 7920
+Epoch: 5, Loss: 0.00465240478515625
+60 Tokens seen: 8052
+61 Tokens seen: 8184
+62 Tokens seen: 8316
+63 Tokens seen: 8448
+64 Tokens seen: 8580
+65 Tokens seen: 8712
+66 Tokens seen: 8844
+67 Tokens seen: 8976
+68 Tokens seen: 9108
+69 Tokens seen: 9240
+Epoch: 6, Loss: 0.00398406982421875
+70 Tokens seen: 9372
+71 Tokens seen: 9504
+72 Tokens seen: 9636
+73 Tokens seen: 9768
+74 Tokens seen: 9900
+75 Tokens seen: 10032
+76 Tokens seen: 10164
+77 Tokens seen: 10296
+78 Tokens seen: 10428
+79 Tokens seen: 10560
+Epoch: 7, Loss: 0.003619384765625
+80 Tokens seen: 10692
+81 Tokens seen: 10824
+82 Tokens seen: 10956
+83 Tokens seen: 11088
+84 Tokens seen: 11220
+85 Tokens seen: 11352
+86 Tokens seen: 11484
+87 Tokens seen: 11616
+88 Tokens seen: 11748
+89 Tokens seen: 11880
+Epoch: 8, Loss: 0.003287506103515625
+90 Tokens seen: 12012
+91 Tokens seen: 12144
+92 Tokens seen: 12276
+93 Tokens seen: 12408
+94 Tokens seen: 12540
+95 Tokens seen: 12672
+96 Tokens seen: 12804
+97 Tokens seen: 12936
+98 Tokens seen: 13068
+99 Tokens seen: 13200
+Epoch: 9, Loss: 0.0030487060546875
+```
 
 ---
 
+## Review Hardware
+25.12.23
+이전에 pretrain 할 때는 하지 않았던 트레인 도중 하드웨어가 어떻게 동작하고 있는지 살펴보았다.
+현재 토큰을 임베딩하고 체크할 때는 GPU와 메모리가 맛있게 돌아간다.
+GPU는 100퍼센트, 메모리는 83퍼센트까지 차지하면서 돌아간다.
+
+RTX 5060Ti가 대역폭이 개박살나서 별로라고 했는데(본디 성능에 비해서), 일단 돌아가는 상황에서
+메모리와 GPU의 비율은 맛있게 잘 돌아가는 것 같다.
+GPU - Memory의 대역폭이 막혀버려 메모리랑 GPU 모두 최대치로 사용하는거 일수도 있겠다만,
+그 상황이라면 Memory가 80퍼센트에서 노는게 아니라 98퍼센트 이런식으로 먹어야 하지 않을까?
+메모리 설정이 어떻게 되어있는지 잘 몰라서 어떨진 모르겠다만 아무튼, 일단 겉만 보자면 아직 
+큰 문제는 없어보인다. 음, 나중에 Hardware 단계에서 어떻게 돌아가는 지 더 공부할 거라 지금은
+아직 시기상조라 생각이 들긴해. AI 트레이닝 모델들은 메모리가 못따라와서 프로세서 성능이 말리는
+거로 알고 있는데 GPU 빵빵하게 돌아가면서 훈련되는거면 긍정적으로 판단은 된다.
+
+Pretrain 때는 하드웨어 지식이 부족하기도 했고, 회사에서 배우면서 흥미를 쌓다보니 fft 돌릴 때
+갑자기 봐야겠단 아이디어가 떠올라서,,,
+
+> 관찰하다 보니 GPU가 노는 구간이 있었다. 그 구간에 대해 GPT한테 역전파 때문이냐는 질문하니, 
+> 역전파는 오히려 GPU가 하드워킹 개빡세게 하는 구간이라카고, (1) Dataload, (2) Validation loop,
+> (3) Checkpoint/logging 때문이라고 한다. 그리고 그땐 CPU 연산을 많이 쓴다는데 관찰해보니 CPU Spike가 
+> 몇번씩 터지긴 하더라.
+
+
+
+## Results
+1epoch에 걸린 시간
+2epoch에 약 3분 걸린다. 10epoch 돌리니 15분 예상 됨.
+
+![Training Loss](/main/base/epoch_loss.png)
+
+Interpretation by ChatGPT
+1. Convergence Speed
+- Epoch 0 -> 1 Loss `1.45 -> 0.16`
+  - 데이터가 너무 작거나, 패턴이 단순함. 강한 오버피팅 신호.
+- Epoch 2(0.04)부터 사실상 학습 완료 수준.
+
+2. After Epoch 3
+- `0.012 -> 0.003`으로 아주 미세한 감소
+- 의미있는 학습은 없음.
+- 사실상 3~4 Epoch이면 충분
+
+***결론***
+> 즉, 모델이 데이터를 거의 외워버렸다. 학습은 성공했지만, 일반화는 모른다.
 
 
 ### Strengthen 

@@ -1,5 +1,7 @@
 import torch
 
+from base import model, train_loader
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(device)
 #device = "cpu"
@@ -34,3 +36,5 @@ for epoch in range(10):
     losses.append(avg_loss)
     print(f"Epoch: {epoch}, Loss: {avg_loss}")
     torch.save(model.state_dict(), "model_" + str(epoch).zfill(3) + ".pth")
+
+
