@@ -10,7 +10,7 @@ print("")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # 파인튜닝 후에 어떻게 응답하는지 확인
-model.load_state_dict(torch.load("model_CatastrophicForgetting_009.pth", map_location=device, weights_only=True))
+model.load_state_dict(torch.load("model_Replay_009.pth", map_location=device, weights_only=True))
 model.eval()
 
 questions = [ qna['q'] for qna in qna_list]
