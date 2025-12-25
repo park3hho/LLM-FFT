@@ -9,11 +9,11 @@ model_name = "kakaocorp/kanana-nano-2.1b-base"
 
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-    torch_dtype=torch.bfloat16,
+    dtype=torch.bfloat16,
     trust_remote_code=True,
 ).to("cuda")
 
-## Catastrophic Forgetting Code
+# # Catastrophic Forgetting Code
 # model = AutoModelForCausalLM.from_pretrained(
 #     model_name,
 #     dtype=torch.bfloat16,
@@ -21,7 +21,7 @@ model = AutoModelForCausalLM.from_pretrained(
 # )
 # # ⭐ 이전 실험 가중치 로드
 # model.load_state_dict(
-#     torch.load("model_009.pth", map_location="cuda")
+#     torch.load("model_000.pth", map_location="cuda")
 # )
 
 model = model.to("cuda")
@@ -130,6 +130,7 @@ for i, output in enumerate(output_list):
 
     answer = decoded[len(question):].strip()
 
+    print("")
     print(f"Q{i}", question)
     print("A:", answer)
 
@@ -171,7 +172,7 @@ class MyDataset(Dataset):
 
 dataset = MyDataset(qna_list, max_length=max_length)
 
-train_loader = DataLoader(dataset, batch_size=2, shuffle=True, drop_last=False)
+train_loader = DataLoader(dataset, batch_size=8, shuffle=True, drop_last=False)
 
 i = iter(train_loader)
 

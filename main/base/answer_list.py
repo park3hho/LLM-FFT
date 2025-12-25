@@ -10,7 +10,7 @@ print("")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # 파인튜닝 후에 어떻게 응답하는지 확인
-model.load_state_dict(torch.load("model_Replay_009.pth", map_location=device, weights_only=True))
+model.load_state_dict(torch.load("model_joint_000.pth", map_location=device, weights_only=True))
 model.eval()
 
 questions = [ qna['q'] for qna in qna_list]
@@ -45,28 +45,3 @@ for i, q in enumerate(questions):
     output_list = output.tolist()
 
     print(f"Q{i}: {tokenizer.decode(output[0], skip_special_tokens=True)}")
-
-
-input_ids = tokenizer(
-    input(),
-    padding=True,
-    return_tensors="pt",
-)["input_ids"].to("cuda")
-
-# print(type(model))
-
-model.eval()
-with torch.no_grad():
-    output = model.generate(
-        input_ids,
-        max_new_tokens=32,
-        attention_mask = (input_ids != 0).long(),
-        pad_token_id=tokenizer.eos_token_id,
-        do_sample=False,
-        # temperature=1.2,
-        # top_k=5
-    )
-
-output_list = output.tolist()
-
-print(f"Q{i}: {tokenizer.decode(output[0], skip_special_tokens=True)}")

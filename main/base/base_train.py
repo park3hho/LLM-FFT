@@ -7,19 +7,19 @@ print(device)
 torch.manual_seed(123)
 model.to(device)
 
-# Normal Model
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.00001, weight_decay=0.01)
-## Catastrophic Forgetting Code, 모델만 이어서
-# model.load_state_dict(torch.load("model_009.pth"))
+# # Normal Model
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.000005, weight_decay=0.01)
+# # Catastrophic Forgetting Code, 모델만 이어서
+# model.load_state_dict(torch.load("model_000.pth"))
 # # optimizer는 새로 시작
-# optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
+# optimizer = torch.optim.AdamW(model.parameters(), lr=0.000001)
 
 tokens_seen, global_step = 0, -1
 
 losses = []
 
 
-for epoch in range(10):
+for epoch in range(4):
     model.train()  # Set model to training mode
 
     epoch_loss = 0
@@ -41,6 +41,6 @@ for epoch in range(10):
     avg_loss = epoch_loss / len(train_loader)
     losses.append(avg_loss)
     print(f"Epoch: {epoch}, Loss: {avg_loss}")
-    torch.save(model.state_dict(), "model_Joint_" + str(epoch).zfill(3) + ".pth")
+    torch.save(model.state_dict(), "model_joint_" + str(epoch).zfill(3) + ".pth")
 
 
