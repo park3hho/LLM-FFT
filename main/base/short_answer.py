@@ -23,4 +23,4 @@ with torch.no_grad():
 
 output_list = output.tolist()
 
-print(f"Q{i}: {tokenizer.decode(output[0], skip_special_tokens=True)}")
+print("Answer:", tokenizer.decode(output[0], skip_special_tokens=True))

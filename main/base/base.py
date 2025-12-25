@@ -98,11 +98,6 @@ print("#### Check Answer before FFT #####")
 print("##################################")
 
 questions = [ qna['q'] for qna in qna_list]
-questions.append("파이썬에서 가상환경을 사용하는 이유는 무엇인가요?")
-questions.append("방구나 먹으시고 ㅋㅋ;")
-questions.append("박찬호는 은퇴 후 어떤 활동을 하고 있나요?")
-questions.append("파이썬에서 리스트와 튜플의 차이는 무엇인가요?")
-questions.append("박찬호는 왜 야구를 시작했나요?")
 
 input_ids = tokenizer(
     questions,
