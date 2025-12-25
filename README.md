@@ -415,7 +415,31 @@ Interpretation by ChatGPT
 ***결론***
 > 즉, 모델이 데이터를 거의 외워버렸다. 학습은 성공했지만, 일반화는 모른다.
 
+```FFT Question Results
+REST API는 무엇인가요
+Q24: ? REST API는 HTTP 프로토콜을 기반으로 자원을 URI로 표현하고
+GET, POST, PUT, DELETE 등의 메서드로 자원을 처리하는
+```
+
+관찰 포인트
+- (1) 핵심적인 내용은 맞음
+- (2) 형식이 깨짐
+- (3) ? 나오면서 나의 짋문을 이어서 완성함.
+- (4) 모르는 질문은 그냥 넘어감.
+
+(1) 학습시키려는 내용은 제대로 학습이 되었다.
+
+(2) 형식이 깨지는 이유는 이전의 답변의 형식을 데이터가 학습하여 그렇게 착각하였기 때문임, 또한 `token` 최대 개수는 32개로 인해 중간에 말이 끊기는 것은 자연스러운 상황임.
+
+(3) `?`가 나오면서 질문을 이어서 완성하는 것은, 언어 모델로서 다음에 올 가장 높은 확률의 토큰이기 `?`이기 때문임. **작은 모델**에서는 문장 구조 보정을 의미생성보다 먼저 해버리기 때문임. 오히려 언어적 감각이 살아있다는 신호
+
+(4) 모르는 질문은 그냥 넘어가는 것은 모델이 지금 '답해야 한다'는 규칙이 없기 때문임. 다음에 올 확률이 높은 토큰을 예측하는 것이지, 질문에 반드시 답하거나 모르면 모른다고 답한다는 규칙을 한번도 학습하지 못했음.
+
+
+> 기대 범위 안의 결과, 작은 모델에서 할 수 있는 만큼은 하였다. 
+
 
 ### Strengthen 
 ### (1) base, instruct Model.
 https://github.com/HongLabInc/HongLabLLM/blob/main/02_fullfinetuning1_base.ipynb
+https://github.com/HongLabInc/HongLabLLM/blob/main/03_fullfinetuning2_instruct.ipynb 
