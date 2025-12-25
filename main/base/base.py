@@ -28,7 +28,7 @@ from pathlib import Path
 
 qna_list = []
 
-text = Path("../data/dataset.txt").read_text(encoding="utf-8")
+text = Path("../data/dataset2.txt").read_text(encoding="utf-8")
 
 blocks = text.split("<|question|>")
 

@@ -438,6 +438,11 @@ GET, POST, PUT, DELETE 등의 메서드로 자원을 처리하는
 
 > 기대 범위 안의 결과, 작은 모델에서 할 수 있는 만큼은 하였다. 
 
+---
+### Catastrophic Forgetting
+새로운 질문, `박찬호`에 대해서 학습시키려고 했음, 하지만, 이것을 그냥하게 되면 Catastrophic Forgetting 현상이 발생함.
+| 화이트보드를 전체 지우고 칠하는 것이 아니라,
+| 같은 부분 위에 다시 덧칠하는 느낌.
 
 ### Strengthen 
 ### (1) base, instruct Model.
