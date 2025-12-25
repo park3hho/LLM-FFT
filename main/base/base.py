@@ -11,7 +11,15 @@ model = AutoModelForCausalLM.from_pretrained(
     model_name,
     dtype=torch.bfloat16,
     trust_remote_code=True,
-).to("cuda")
+)
+
+# ⭐ 이전 실험 가중치 로드
+model.load_state_dict(
+    torch.load("model_009.pth", map_location="cuda")
+)
+
+model = model.to("cuda")
+
 tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left")
 tokenizer.pad_token = tokenizer.eos_token # <|end_of_text|> 128001
 

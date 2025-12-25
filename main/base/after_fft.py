@@ -10,15 +10,15 @@ print("")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # 파인튜닝 후에 어떻게 응답하는지 확인
-model.load_state_dict(torch.load("model_009.pth", map_location=device, weights_only=True))
+model.load_state_dict(torch.load("model_CatastrophicForgetting_009.pth", map_location=device, weights_only=True))
 model.eval()
 
 questions = [ qna['q'] for qna in qna_list]
-questions.append("홍정모가 매일하는 게임은?")
-questions.append("홍정모에 대해서 얘기해봐.")
-questions.append("카나나 모델에 대해서 설명해봐.")
-questions.append("이처럼 인간처럼 생각하고 행동하는 AI 모델은 ")
-questions.append("인공지능의 장점은")
+questions.append("파이썬에서 가상환경을 사용하는 이유는 무엇인가요?")
+questions.append("방구나 먹으시고 ㅋㅋ;")
+questions.append("박찬호는 은퇴 후 어떤 활동을 하고 있나요?")
+questions.append("파이썬에서 리스트와 튜플의 차이는 무엇인가요?")
+questions.append("박찬호는 왜 야구를 시작했나요?")
 
 for i, q in enumerate(questions):
 
@@ -46,6 +46,7 @@ for i, q in enumerate(questions):
 
     print(f"Q{i}: {tokenizer.decode(output[0], skip_special_tokens=True)}")
 
+
 input_ids = tokenizer(
     input(),
     padding=True,
@@ -66,5 +67,6 @@ with torch.no_grad():
         # top_k=5
     )
 
-gen_tokens = output[0][input_ids.shape[1]:]
-print(f"Q{i}: {tokenizer.decode(gen_tokens, skip_special_tokens=True)}")
+output_list = output.tolist()
+
+print(f"Q{i}: {tokenizer.decode(output[0], skip_special_tokens=True)}")

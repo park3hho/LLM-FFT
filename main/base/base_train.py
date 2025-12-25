@@ -6,11 +6,17 @@ print(device)
 #device = "cpu"
 torch.manual_seed(123)
 model.to(device)
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.00001, weight_decay=0.01)
+
+# 모델만 이어서
+model.load_state_dict(torch.load("model_009.pth"))
+
+# optimizer는 새로 시작
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
 
 tokens_seen, global_step = 0, -1
 
 losses = []
+
 
 for epoch in range(10):
     model.train()  # Set model to training mode
@@ -34,6 +40,6 @@ for epoch in range(10):
     avg_loss = epoch_loss / len(train_loader)
     losses.append(avg_loss)
     print(f"Epoch: {epoch}, Loss: {avg_loss}")
-    torch.save(model.state_dict(), "model_" + str(epoch).zfill(3) + ".pth")
+    torch.save(model.state_dict(), "model_CatastrophicForgetting_" + str(epoch).zfill(3) + ".pth")
 
 
