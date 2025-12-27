@@ -48,7 +48,7 @@ from pathlib import Path
 qna_list = []
 
 # 데이터 읽기
-text = Path("../data/dataset.txt").read_text(encoding="utf-8")
+text = Path("../data/dataset3.txt").read_text(encoding="utf-8")
 
 # <|question|> 단위로 나누기
 blocks = text.split("<|question|>")
@@ -189,5 +189,5 @@ for i, q_ids in enumerate(questions):
 
     output_list = output.tolist()
     print("")
-    print("=======================Hello=======================")
-    print(f"Q{i}: {tokenizer.decode(output[0], skip_special_tokens=True)}")
+    print(f"==================Q{i}==================")
+    print(f"{tokenizer.decode(output[0], skip_special_tokens=True)}")
