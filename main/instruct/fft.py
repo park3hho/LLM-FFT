@@ -2,7 +2,7 @@ from instruct import model, tokenizer, device, qna_list
 import torch
 
 # 파인튜닝 후에 어떻게 응답하는지 확인
-model.load_state_dict(torch.load("model_ff000.pth", map_location=device, weights_only=True))
+model.load_state_dict(torch.load("model_ff003.pth", map_location=device, weights_only=True))
 model.eval()
 
 # 파인튜닝 후에 어떻게 대답하는지 확인

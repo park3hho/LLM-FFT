@@ -1,15 +1,21 @@
 # llm_fft
 1. DataSet
-2. BaseModel 
-3. Q/A Prompt Construction & Tokenization (Instruction Dataset Preprocessing)
-4. Check Logic Answer before FFT
+2. BaseModel   
+   1. Q/A Prompt Construction & Tokenization (Instruction Dataset Preprocessing)
+   2. Check Logic Answer before FFT
+3. InstructModel
+   1. Q/A Prompt Construction & Tokenization (Instruction Dataset Preprocessing)
+   2. Check Logic Answer before FFT
 
+## Feedback.
+Instruct Model이 Base Model보다 훨씬 훈련이 잘됨.
 
-## a. ref 
+# Base Model
 
 ## Dataset
-Let LLM make.
+Let LLM make Datasets.
 
+Structure of Datasets
 (1) 정규식 사용 (ex " | ")  
 (2) JSON  
 (3) 커스텀 토큰  
@@ -393,9 +399,7 @@ Pretrain 때는 하드웨어 지식이 부족하기도 했고, 회사에서 배�
 > (3) Checkpoint/logging 때문이라고 한다. 그리고 그땐 CPU 연산을 많이 쓴다는데 관찰해보니 CPU Spike가 
 > 몇번씩 터지긴 하더라.
 
-
-
-## Results
+## Results of Base Model
 Loss가 3일 때 가장 대답이 좋다. (Epoch 0일 때, 1 이하로 내려가면 바로 이상해짐)
 - 모델이 작아서 Loss가 낮으면 낮을수록 고장나버림 기본적인 성능을 못내버림.
 
