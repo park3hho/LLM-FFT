@@ -1,3 +1,10 @@
+1. BaseModel   
+   1. Q/A Prompt Construction & Tokenization (Instruction Dataset Preprocessing)
+   2. Check Logic Answer before FFT
+2. InstructModel
+   1. Q/A Prompt Construction & Tokenization (Instruction Dataset Preprocessing)
+   2. Check Logic Answer before FFT
+
 # Base Model
 
 ## Dataset
@@ -365,5 +372,70 @@ Epoch: 9, Loss: 0.0030487060546875
 ---
 
 # Catastrophic Forgetting
+
+``` CF Loss Results
+0 Tokens seen: 148
+1 Tokens seen: 296
+2 Tokens seen: 444
+3 Tokens seen: 592
+4 Tokens seen: 740
+Epoch: 0, Loss: 2.8671875
+5 Tokens seen: 888
+6 Tokens seen: 1036
+7 Tokens seen: 1184
+8 Tokens seen: 1332
+9 Tokens seen: 1480
+Epoch: 1, Loss: 0.410546875
+10 Tokens seen: 1628
+11 Tokens seen: 1776
+12 Tokens seen: 1924
+13 Tokens seen: 2072
+14 Tokens seen: 2220
+Epoch: 2, Loss: 0.11416015625
+15 Tokens seen: 2368
+16 Tokens seen: 2516
+17 Tokens seen: 2664
+18 Tokens seen: 2812
+19 Tokens seen: 2960
+Epoch: 3, Loss: 0.036328125
+20 Tokens seen: 3108
+21 Tokens seen: 3256
+22 Tokens seen: 3404
+23 Tokens seen: 3552
+24 Tokens seen: 3700
+Epoch: 4, Loss: 0.0124267578125
+25 Tokens seen: 3848
+26 Tokens seen: 3996
+27 Tokens seen: 4144
+28 Tokens seen: 4292
+29 Tokens seen: 4440
+Epoch: 5, Loss: 0.00638427734375
+30 Tokens seen: 4588
+31 Tokens seen: 4736
+32 Tokens seen: 4884
+33 Tokens seen: 5032
+34 Tokens seen: 5180
+Epoch: 6, Loss: 0.0043792724609375
+35 Tokens seen: 5328
+36 Tokens seen: 5476
+37 Tokens seen: 5624
+38 Tokens seen: 5772
+39 Tokens seen: 5920
+Epoch: 7, Loss: 0.0035064697265625
+40 Tokens seen: 6068
+41 Tokens seen: 6216
+42 Tokens seen: 6364
+43 Tokens seen: 6512
+44 Tokens seen: 6660
+Epoch: 8, Loss: 0.00306549072265625
+45 Tokens seen: 6808
+46 Tokens seen: 6956
+47 Tokens seen: 7104
+48 Tokens seen: 7252
+49 Tokens seen: 7400
+Epoch: 9, Loss: 0.00269775390625
+
+# 약 12분 소요됨.
+```
 
 목적: BaseModel에 Catstrophic Forgetting 유도하기

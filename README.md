@@ -1,47 +1,44 @@
 # llm_fft
-1. DataSet
-2. BaseModel   
-   1. Q/A Prompt Construction & Tokenization (Instruction Dataset Preprocessing)
-   2. Check Logic Answer before FFT
-3. InstructModel
-   1. Q/A Prompt Construction & Tokenization (Instruction Dataset Preprocessing)
-   2. Check Logic Answer before FFT
+a. Feedback
+b. Datasets
+c. Base Model
+d. Instruct Model
+e. Other Branches
+    i. Catastrophic Forgetting
+    ii. Continuous Learning
+    iii. Hardware
+
 
 ## Feedback.
-Instruct Model이 Base Model보다 훨씬 훈련이 잘됨.
+
+훈련을 크게 두가지로 분류할 수 있다. 하나는 지식을 학습하는 과정, 둘은 행동을 학습하는 과정이다.
+BaseModel을 크게 만들고 그 위에 행동 프레임을 세울 수 있다. 
+여기서 SFT 학습의 크기에 따라, 또, 기본 베이스의 데이터 양에 따라, 추가적으로 학습할 수 있는 내용의 크기가 정해진다.
+
+Pretrain = Base Model
+Base Model + SFT = Instruct Model
+
+Instruct Model이 Base Model보다 훨씬 훈련이 잘됨. 왜냐?   
+① 이미 '대화의 틀'이 잡혀 있음  
+② 데이터의 의도(Intent) 파악 능력  
+③ RLHF(인간 피드백을 통한 강화학습)의 효과
+
+
 
 ## 데이터셋 만든 방식
 
 ---
 
-## Review Hardware
-25.12.23
-이전에 pretrain 할 때는 하지 않았던 트레인 도중 하드웨어가 어떻게 동작하고 있는지 살펴보았다.
-현재 토큰을 임베딩하고 체크할 때는 GPU와 메모리가 맛있게 돌아간다.
-GPU는 100퍼센트, 메모리는 83퍼센트까지 차지하면서 돌아간다.
+## Base Model
 
-RTX 5060Ti가 대역폭이 개박살나서 별로라고 했는데(본디 성능에 비해서), 일단 돌아가는 상황에서
-메모리와 GPU의 비율은 맛있게 잘 돌아가는 것 같다.
-GPU - Memory의 대역폭이 막혀버려 메모리랑 GPU 모두 최대치로 사용하는거 일수도 있겠다만,
-그 상황이라면 Memory가 80퍼센트에서 노는게 아니라 98퍼센트 이런식으로 먹어야 하지 않을까?
-메모리 설정이 어떻게 되어있는지 잘 몰라서 어떨진 모르겠다만 아무튼, 일단 겉만 보자면 아직 
-큰 문제는 없어보인다. 음, 나중에 Hardware 단계에서 어떻게 돌아가는 지 더 공부할 거라 지금은
-아직 시기상조라 생각이 들긴해. AI 트레이닝 모델들은 메모리가 못따라와서 프로세서 성능이 말리는
-거로 알고 있는데 GPU 빵빵하게 돌아가면서 훈련되는거면 긍정적으로 판단은 된다.
+**1epoch에 걸린 시간**: 2epoch에 약 3분 걸린다. 10epoch 돌리니 15분 예상 됨.
 
-Pretrain 때는 하드웨어 지식이 부족하기도 했고, 회사에서 배우면서 흥미를 쌓다보니 fft 돌릴 때
-갑자기 봐야겠단 아이디어가 떠올라서,,,
+### About Loss
 
-> 관찰하다 보니 GPU가 노는 구간이 있었다. 그 구간에 대해 GPT한테 역전파 때문이냐는 질문하니, 
-> 역전파는 오히려 GPU가 하드워킹 개빡세게 하는 구간이라카고, (1) Dataload, (2) Validation loop,
-> (3) Checkpoint/logging 때문이라고 한다. 그리고 그땐 CPU 연산을 많이 쓴다는데 관찰해보니 CPU Spike가 
-> 몇번씩 터지긴 하더라.
-
-## Results of Base Model
 Loss가 3일 때 가장 대답이 좋다. (Epoch 0일 때, 1 이하로 내려가면 바로 이상해짐)
 - 모델이 작아서 Loss가 낮으면 낮을수록 고장나버림 기본적인 성능을 못내버림.
 
-**Loss 3일 때,**
+#### **Loss 3일 때,**
 ```
 #############################
 ##    Loss = 3 | Answer    ##
@@ -74,7 +71,7 @@ Q23: 파이썬에서 리스트와 튜플의 차이는 무엇인가요? 리스트
 Q24: 박찬호는 왜 야구를 시작했나요? 박찬호는 어릴 때부터 야구를 좋아했습니다. 그는 야구를 통해 자신의  꿈을 이루고 싶었고, 야구를 통해
 ```
 
-**Loss 1 미만일 때**
+#### **Loss 1 미만일 때**
 ```yaml
 #############################
 ##    Loss < 1 | Answer    ##
@@ -107,16 +104,14 @@ Q23: 파이썬에서 리스트와 튜플의 차이는 무엇인가요?
 Q24: 박찬호는 왜 야구를 시작했나요?
 ```
 
-> Loss 조절 방식
+#### **Loss 조절 방식**
 > 1. Learning Rate(Optimizer)
 > 2. Batch Size()
 
-1epoch에 걸린 시간
-2epoch에 약 3분 걸린다. 10epoch 돌리니 15분 예상 됨.
-
 ![Training Loss](/main/base/epoch_loss.png)
 
-Interpretation by ChatGPT
+#### **Interpretation by ChatGPT**
+
 1. Convergence Speed
 - Epoch 0 -> 1 Loss `1.45 -> 0.16`
   - 데이터가 너무 작거나, 패턴이 단순함. 강한 오버피팅 신호.
@@ -154,6 +149,14 @@ GET, POST, PUT, DELETE 등의 메서드로 자원을 처리하는
 > 기대 범위 안의 결과, 작은 모델에서 할 수 있는 만큼은 하였다. 
 
 ---
+
+## Instruct Model
+사실 얘는 훈련이 굉장히 잘된다. 그리고 Loss가 2~3이 아닌 1 이하로 내려가야 훈련시킨 데이터를 이용한다.
+근데 내가 바라는건 이런 받은 내용을 그대로 말하는 것이 아닌(Overfitting) 좀 자유롭게 대답하는 모델도 만들어봐야하는데, 이건 모델을 좀 더 근본적으로 만져볼 줄 알아야 하지 않을까. 
+--- 
+
+## Other Branches
+
 ### Catastrophic Forgetting
 Pre-datset: ver1
 Now-datset: ver2
@@ -161,71 +164,6 @@ Now-datset: ver2
 새로운 질문, `박찬호`에 대해서 학습시키려고 했음, 하지만, 이것을 그냥하게 되면 Catastrophic Forgetting 현상이 발생함.
 | 화이트보드를 전체 지우고 칠하는 것이 아니라,
 | 같은 부분 위에 다시 덧칠하는 느낌.
-
-```Results
-0 Tokens seen: 148
-1 Tokens seen: 296
-2 Tokens seen: 444
-3 Tokens seen: 592
-4 Tokens seen: 740
-Epoch: 0, Loss: 2.8671875
-5 Tokens seen: 888
-6 Tokens seen: 1036
-7 Tokens seen: 1184
-8 Tokens seen: 1332
-9 Tokens seen: 1480
-Epoch: 1, Loss: 0.410546875
-10 Tokens seen: 1628
-11 Tokens seen: 1776
-12 Tokens seen: 1924
-13 Tokens seen: 2072
-14 Tokens seen: 2220
-Epoch: 2, Loss: 0.11416015625
-15 Tokens seen: 2368
-16 Tokens seen: 2516
-17 Tokens seen: 2664
-18 Tokens seen: 2812
-19 Tokens seen: 2960
-Epoch: 3, Loss: 0.036328125
-20 Tokens seen: 3108
-21 Tokens seen: 3256
-22 Tokens seen: 3404
-23 Tokens seen: 3552
-24 Tokens seen: 3700
-Epoch: 4, Loss: 0.0124267578125
-25 Tokens seen: 3848
-26 Tokens seen: 3996
-27 Tokens seen: 4144
-28 Tokens seen: 4292
-29 Tokens seen: 4440
-Epoch: 5, Loss: 0.00638427734375
-30 Tokens seen: 4588
-31 Tokens seen: 4736
-32 Tokens seen: 4884
-33 Tokens seen: 5032
-34 Tokens seen: 5180
-Epoch: 6, Loss: 0.0043792724609375
-35 Tokens seen: 5328
-36 Tokens seen: 5476
-37 Tokens seen: 5624
-38 Tokens seen: 5772
-39 Tokens seen: 5920
-Epoch: 7, Loss: 0.0035064697265625
-40 Tokens seen: 6068
-41 Tokens seen: 6216
-42 Tokens seen: 6364
-43 Tokens seen: 6512
-44 Tokens seen: 6660
-Epoch: 8, Loss: 0.00306549072265625
-45 Tokens seen: 6808
-46 Tokens seen: 6956
-47 Tokens seen: 7104
-48 Tokens seen: 7252
-49 Tokens seen: 7400
-Epoch: 9, Loss: 0.00269775390625
-
-# 약 12분 소요됨.
-```
 
 ```Catastrophic ver2 Results
 #############################
@@ -293,11 +231,34 @@ CL의 실질 해법
   - 새 태스크는 새로운 expert를 추가함
 - GPT-4 Mixtral 계열임.
 
-A. 현업 흐름
+A. 현업 흐름  
 초기 모델 -> distil -> base -> 새 데이터 학습
 
+### Review Hardware
+25.12.23
+이전에 pretrain 할 때는 하지 않았던 트레인 도중 하드웨어가 어떻게 동작하고 있는지 살펴보았다.
+현재 토큰을 임베딩하고 체크할 때는 GPU와 메모리가 맛있게 돌아간다.
+GPU는 100퍼센트, 메모리는 83퍼센트까지 차지하면서 돌아간다.
 
-### Strengthen 
-### (1) base, instruct Model.
+RTX 5060Ti가 대역폭이 개박살나서 별로라고 했는데(본디 성능에 비해서), 일단 돌아가는 상황에서
+메모리와 GPU의 비율은 맛있게 잘 돌아가는 것 같다.
+GPU - Memory의 대역폭이 막혀버려 메모리랑 GPU 모두 최대치로 사용하는거 일수도 있겠다만,
+그 상황이라면 Memory가 80퍼센트에서 노는게 아니라 98퍼센트 이런식으로 먹어야 하지 않을까?
+메모리 설정이 어떻게 되어있는지 잘 몰라서 어떨진 모르겠다만 아무튼, 일단 겉만 보자면 아직 
+큰 문제는 없어보인다. 음, 나중에 Hardware 단계에서 어떻게 돌아가는 지 더 공부할 거라 지금은
+아직 시기상조라 생각이 들긴해. AI 트레이닝 모델들은 메모리가 못따라와서 프로세서 성능이 말리는
+거로 알고 있는데 GPU 빵빵하게 돌아가면서 훈련되는거면 긍정적으로 판단은 된다.
+
+Pretrain 때는 하드웨어 지식이 부족하기도 했고, 회사에서 배우면서 흥미를 쌓다보니 fft 돌릴 때
+갑자기 봐야겠단 아이디어가 떠올라서,,,
+
+> 관찰하다 보니 GPU가 노는 구간이 있었다. 그 구간에 대해 GPT한테 역전파 때문이냐는 질문하니, 
+> 역전파는 오히려 GPU가 하드워킹 개빡세게 하는 구간이라카고, (1) Dataload, (2) Validation loop,
+> (3) Checkpoint/logging 때문이라고 한다. 그리고 그땐 CPU 연산을 많이 쓴다는데 관찰해보니 CPU Spike가 
+> 몇번씩 터지긴 하더라.
+
+--- 
+
+### Links.
 https://github.com/HongLabInc/HongLabLLM/blob/main/02_fullfinetuning1_base.ipynb
 https://github.com/HongLabInc/HongLabLLM/blob/main/03_fullfinetuning2_instruct.ipynb 
