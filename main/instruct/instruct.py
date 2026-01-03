@@ -28,7 +28,7 @@ print("")
 
 messages = [
     {"role": "system", "content": "You are a helpful AI assistant developed by Kakao."},
-    {"role": "user", "content": "홍정모가 좋아하는 게임은?"},
+    {"role": "user", "content": "홍정모가 좋아하는 게임은SASDASD?"},
     {"role": "assistant", "content":"홍정모는 헬다이버즈2를 좋아해서 자주합니다."}
 ]
 
